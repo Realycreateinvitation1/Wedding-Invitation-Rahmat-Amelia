@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undangan Rahmat & Amelia</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    html, body {
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+      background: #fff0f6;
+    }
+    .cover {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('cover_web.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
+      transition: opacity 1s ease;
+    }
+    .cover.hidden {opacity: 0; pointer-events: none;}
+    .to {
+      margin-top: 400px;
+      text-align: center;
+      background-color: rgba(255,255,255,0.85);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .to h2 {font-size: 1.2em;}
+    .to h1 {font-size: 1.5em; color: #b3005e;}
+    .to small {font-size: 0.75em; display: block; margin-top: 5px;}
+    #countdown {
+      margin-top: 15px;
+      font-size: 1em;
+      color: #800000;
+    }
+    .open-btn {
+      margin-top: 20px;
+      padding: 10px 24px;
+      font-size: 1em;
+      background-color: #b3005e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #800000;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 999;
+    }
+    nav a img {
+      width: 40px;
+      height: 40px;
+    }
+    section {
+      padding: 60px 20px;
+      padding-bottom: 100px;
+      min-height: 100vh;
+    }
+    h2 {
+      color: #b3005e;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    form input, form textarea, form select {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    form button {
+      background: #b3005e;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .content {display: none;}
+    iframe {width: 100%; height: 100vh; border: none;}
+  </style>
+</head>
+<body>
+
+<div class="cover" id="cover">
+  <div class="to">
+    <h2>Kepada Yth.</h2>
+    <h1 id="guestName">Tamu Undangan</h1>
+    <small>mohon maaf apabila ada kesalahan penulisan nama</small>
+    <div id="countdown"></div>
+    <button class="open-btn" onclick="openInvitation()">Buka Undangan</button>
+  </div>
+</div>
+
+<nav>
+  <a href="#home"><img src="nav_home.png" alt="Home"></a>
+  <a href="#akad"><img src="nav_kalender.png" alt="Akad"></a>
+  <a href="#love"><img src="nav_love.png" alt="Love Story"></a>
+  <a href="#gift"><img src="nav_gift.png" alt="Gift"></a>
+  <a href="#doa"><img src="nav_doa.png" alt="Doa"></a>
+</nav>
+
+<div class="content" id="content">
+  <section id="home">
+    <iframe src="https://www.canva.com/design/DAGsA1FYeLM/6cRB5SOKna3i8spMvBaBaA/watch?embed" allowfullscreen allow="autoplay"></iframe>
+  </section>
+
+  <section id="akad">
+    <h2>Akad & Resepsi</h2>
+  </section>
+
+  <section id="love">
+    <h2>Love Story</h2>
+  </section>
+
+  <section id="gift">
+    <h2>Gift</h2>
+  </section>
+
+  <section id="doa">
+    <h2>Doa & Ucapan</h2>
+    <form id="doaForm">
+      <input type="text" placeholder="Nama" required />
+      <textarea placeholder="Ucapan doa..." rows="4" required></textarea>
+      <button type="submit">Kirim</button>
+    </form>
+  </section>
+
+  <section id="rsvp">
+    <h2>Konfirmasi Kehadiran</h2>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdguYzRXRwn1rGl5-rAjRitZjvhrP_M_Ao7yeM-luB9aTe9dQ/viewform?embedded=true" 
+      width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Memuat…</iframe>
+  </section>
+</div>
+
+<script>
+  function getGuestName() {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("to") || "Tamu Undangan";
+    return decodeURIComponent(name.replace(/\+/g, " "));
+  }
+  document.getElementById("guestName").innerText = getGuestName();
+
+  function openInvitation() {
+    document.getElementById("cover").classList.add("hidden");
+    document.getElementById("content").style.display = "block";
+  }
+
+  // COUNTDOWN
+  const countdown = document.getElementById("countdown");
+  const targetDate = new Date("2025-07-12T10:00:00+08:00").getTime();
+  const updateCountdown = setInterval(() => {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      countdown.innerHTML = "Acara sedang berlangsung";
+      clearInterval(updateCountdown);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    countdown.innerHTML = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
+  }, 1000);
+</script>
+
+</body>
+</html>
